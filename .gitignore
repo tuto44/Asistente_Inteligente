@@ -1,0 +1,23 @@
+# PHP / Composer
+Principal/vendor/
+
+# Variables de entorno
+.env
+Principal/.env
+Orquestador_IA/.env
+
+# Python
+Orquestador_IA/venv/
+Orquestador_IA/.venv/
+__pycache__/
+*.py[cod]
+
+# Qdrant / datos locales
+qdrant_storage/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log

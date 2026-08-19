@@ -1,0 +1,13 @@
+{
+    "name": "smartsupport/php-app",
+    "description": "Orquestador principal del Asistente TI",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^7.8",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

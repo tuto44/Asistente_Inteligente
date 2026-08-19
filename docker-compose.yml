@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  web_php:
+    build: 
+      context: ./Principal
+    ports:
+      - "8080:80"
+    volumes:
+      - ./Principal:/var/www/html
+    networks:
+      - smartsupport_network
+
+  ia_python:
+    build: 
+      context: ./Orquestador_IA
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Orquestador_IA:/app
+    environment:
+      - QDRANT_URL=http://qdrant_db:6333
+    networks:
+      - smartsupport_network
+
+  qdrant_db:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - smartsupport_network
+
+networks:
+  smartsupport_network:
+    driver: bridge
+
+volumes:
+  qdrant_data:
