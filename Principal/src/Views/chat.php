@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartSupport - Asistente TI</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=<?= time() ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -18,7 +18,7 @@
                     <span class="subtitle">Asistente de TI Nivel 1</span>
                 </div>
             </div>
-            <button id="reset-btn" class="reset-btn" title="Nueva consulta">
+            <button id="reset-btn" type="button" class="reset-btn" title="Nueva consulta">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                     <path d="M3 3v5h5"></path>
@@ -53,6 +53,6 @@
         </form>
     </div>
 
-    <script src="/js/chat.js"></script>
+    <script src="/js/chat.js?v=<?= time() ?>"></script>
 </body>
 </html>
