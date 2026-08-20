@@ -1,13 +1,13 @@
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain_google_genai import (GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI)
 from app.database.qdrant_manager import QdrantManager
 from app.prompts.system_prompt import construir_prompt 
 from app.config import CHAT_MODEL, EMBEDDING_MODEL, MIN_SIMILARITY_SCORE, TOP_K_RESULTS
+
 
 class RagService:
 
     def __init__(self):
         self.qdrant = QdrantManager()
-        # ❌ ELIMINADO: self.conversation = ConversationService() (PHP manejará el historial)
         self.embedding_model = GoogleGenerativeAIEmbeddings(
             model=EMBEDDING_MODEL
         )
@@ -25,37 +25,31 @@ class RagService:
     def construir_consulta_rag(self, pregunta: str, historial: list) -> str:
         if not historial:
             return pregunta
-            
-        ultimos_mensajes = historial[-4:]
-        historial_texto = []
         
-        for mensaje in ultimos_mensajes:
-            # Compatibilidad: detecta si viene como objeto Pydantic o diccionario de PHP
-            role = mensaje.role if hasattr(mensaje, 'role') else mensaje.get('role', '')
-            content = mensaje.content if hasattr(mensaje, 'content') else mensaje.get('content', '')
-            
-            rol = "Usuario" if role == "user" else "Asistente"
-            historial_texto.append(f"{rol}: {content}")
-            
-        return (
-            "Contexto de la conversación:\n"
-            + "\n".join(historial_texto)
-            + f"\n\nPregunta actual:\n{pregunta}"
-        )
+        # Para respuestas muy cortas ("sí", "no", "listo"), se combina con la pregunta previa
+        # para evitar que el vector pierda el contexto del tema
+        palabras = pregunta.strip().split()
+        if len(palabras) <= 4:
+            for mensaje in reversed(historial):
+                role = mensaje.role if hasattr(mensaje, 'role') else mensaje.get('role', '')
+                content = mensaje.content if hasattr(mensaje, 'content') else mensaje.get('content', '')
+                if role == 'user' and len(content.strip().split()) > 3:
+                    return f"{content} {pregunta}"
+        
+        return pregunta
 
     def recuperar_contexto(self, pregunta: str, historial: list, limite: int = TOP_K_RESULTS) -> str:
         consulta_rag = self.construir_consulta_rag(
             pregunta=pregunta,
             historial=historial
         )
-        print(f"Consulta utilizada para RAG:\n{consulta_rag}")
+        print(f"Consulta utilizada para RAG: {consulta_rag}")
         embedding = self.generar_embedding(consulta_rag)
         
         resultados = self.qdrant.buscar_similares(
             embedding=embedding,
             limite=limite
         )
-        
         if not resultados:
             return None
             
@@ -73,26 +67,25 @@ class RagService:
             
         return "\n\n".join(contexto)  
 
-    def responder(self, pregunta: str, usuario: str = "Usuario", historial: list = None) -> str:
+    def responder(self, usuario: str, pregunta: str, historial: list = None) -> str:
         print(f"Pregunta recibida de {usuario}: {pregunta}")
-        
         if historial is None:
             historial = []
 
-        # 1. Recuperar contexto usando el historial enviado por PHP
+        # 1. Recuperar contexto vectorial utilizando el historial enviado por PHP
         contexto = self.recuperar_contexto(
             pregunta=pregunta,
             historial=historial
         )
         
-        # 2. Si no hay contexto que supere el umbral
+        # 2. Evaluación si la documentación cubre el caso
         if contexto is None:
             return (
                 "No encontré información relacionada con tu consulta en la "
-                "documentación disponible. Te recomiendo contactar al área de TI."
+                "documentación disponible. Te recomiendo hablar directamente con el encargado de TI de HWI."
             )
         
-        # 3. Construir prompt con la función de system_prompt.py
+        # 3. Construir prompt completo
         prompt = construir_prompt(
             usuario=usuario,
             pregunta=pregunta,
@@ -100,23 +93,17 @@ class RagService:
             historial=historial
         )
         
+        # 4. Invocación al LLM
         respuesta = self.llm.invoke(prompt)
         print("Respuesta generada correctamente.")
         
-        # 4. Extraer el texto limpiamente (soporta strings o listas de bloques)
+        # 5. Extracción limpia de texto en objetos AIMessage
         content = respuesta.content if hasattr(respuesta, 'content') else str(respuesta)
-        
         if isinstance(content, list):
-            partes_texto = []
-            for bloque in content:
-                if isinstance(bloque, str):
-                    partes_texto.append(bloque)
-                elif isinstance(bloque, dict) and "text" in bloque:
-                    partes_texto.append(bloque["text"])
-                elif hasattr(bloque, "text"):
-                    partes_texto.append(str(bloque.text))
-            respuesta_texto = "".join(partes_texto)
-        else:
-            respuesta_texto = str(content)
-
-        return respuesta_texto
+            partes = [
+                b if isinstance(b, str) else b.get("text", str(b))
+                for b in content
+            ]
+            return "".join(partes)
+        
+        return str(content)

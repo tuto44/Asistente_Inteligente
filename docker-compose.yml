@@ -1,11 +1,37 @@
 version: '3.8'
 
 services:
+  db_mysql:
+    image: mysql:8.0
+    container_name: smartsupport_mysql
+    environment:
+      MYSQL_DATABASE: smartsupport
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - smartsupport_network
+
   web_php:
     build: 
       context: ./Principal
+    container_name: smartsupport_php
     ports:
       - "8080:80"
+    environment:
+      - DB_HOST=db_mysql
+      - DB_PORT=3306
+      - DB_DATABASE=smartsupport
+      - DB_USERNAME=root
+      - DB_PASSWORD=root_password
+      - PYTHON_API_URL=http://ia_python:8000/api/chat
+      - INTERNAL_API_KEY=secreto_123
+    depends_on:
+      - db_mysql
+      - ia_python
     volumes:
       - ./Principal:/var/www/html
     networks:
@@ -14,17 +40,23 @@ services:
   ia_python:
     build: 
       context: ./Orquestador_IA
+    container_name: smartsupport_python
     ports:
       - "8000:8000"
-    volumes:
-      - ./Orquestador_IA:/app
     environment:
       - QDRANT_URL=http://qdrant_db:6333
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - INTERNAL_API_KEY=secreto_123
+    depends_on:
+      - qdrant_db
+    volumes:
+      - ./Orquestador_IA:/app
     networks:
       - smartsupport_network
 
   qdrant_db:
     image: qdrant/qdrant:latest
+    container_name: smartsupport_qdrant
     ports:
       - "6333:6333"
     volumes:
@@ -38,3 +70,4 @@ networks:
 
 volumes:
   qdrant_data:
+  mysql_data:

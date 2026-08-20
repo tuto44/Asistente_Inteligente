@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Evitar bucle infinito si la petición ya es index.php
+    RewriteRule ^index\.php$ - [L]
+
+    # Si la ruta no es un archivo ni un directorio real, redirigir a index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
