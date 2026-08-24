@@ -36,21 +36,15 @@
         </div>
 
         <!-- Formulario de Envío -->
-        <form id="chat-form" class="chat-input-area">
-            <input 
-                type="text" 
-                id="user-input" 
-                placeholder="Escribe tu consulta aquí..." 
-                autocomplete="off"
-                required
-            >
-            <button type="submit" id="send-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-            </button>
-        </form>
+<form id="chat-form" class="chat-input-container">
+    <input type="text" id="user-input" placeholder="Escribe tu consulta aquí..." autocomplete="off" required>
+    <button type="submit" class="send-btn" id="send-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+    </button>
+</form>
     </div>
 
     <script src="/js/chat.js?v=<?= time() ?>"></script>

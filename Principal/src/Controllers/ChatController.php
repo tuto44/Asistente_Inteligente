@@ -2,7 +2,6 @@
 namespace App\Controllers;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use App\Models\ChatHistory;
 use Throwable;
 
@@ -21,7 +20,6 @@ class ChatController {
 
     public function sendMessage() {
         header('Content-Type: application/json');
-
         try {
             $input = json_decode(file_get_contents('php://input'), true);
             $question = $input['pregunta'] ?? '';
@@ -33,7 +31,6 @@ class ChatController {
             }
 
             $historial = $this->chatHistoryModel->getLastMessages($this->sessionId, 8);
-
             $payload = [
                 'question' => $question,
                 'historial' => $historial,
@@ -50,7 +47,7 @@ class ChatController {
                     'X-API-Key' => $apiKey,
                     'Accept' => 'application/json'
                 ],
-                'timeout' => 30
+                'timeout' => 60
             ]);
 
             $result = json_decode($response->getBody(), true);
@@ -59,26 +56,18 @@ class ChatController {
             $this->chatHistoryModel->saveMessage($this->sessionId, $userName, 'user', $question);
             $this->chatHistoryModel->saveMessage($this->sessionId, $userName, 'assistant', $botAnswer);
 
-            echo json_encode([
-                'status' => 'success', 
-                'answer' => $botAnswer
-            ]);
+            echo json_encode(['status' => 'success', 'answer' => $botAnswer]);
 
         } catch (Throwable $e) {
             error_log("Error en ChatController: " . $e->getMessage());
-            echo json_encode([
-                'status' => 'error', 
-                'answer' => 'Ocurrió un error procesando la solicitud: ' . $e->getMessage()
-            ]);
+            echo json_encode(['status' => 'error', 'answer' => 'Ocurrió un error: ' . $e->getMessage()]);
         }
     }
 
     public function resetSession() {
         header('Content-Type: application/json');
         try {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
+            if (session_status() === PHP_SESSION_NONE) session_start();
             session_regenerate_id(true);
             echo json_encode(['status' => 'success', 'message' => 'Sesión reiniciada.']);
         } catch (Throwable $e) {

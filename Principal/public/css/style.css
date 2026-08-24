@@ -1,22 +1,30 @@
+/* ==========================================
+   1. ESTILOS GLOBALES Y TIPOGRAFÍA
+   ========================================== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-    background-color: #f3f4f6;
+    background-color: #f1f5f9;
+    color: #0f172a;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
+/* ==========================================
+   2. ESTILOS DE LA PANTALLA DE CHAT
+   ========================================== */
 .chat-container {
     width: 100%;
-    max-width: 480px;
+    max-width: 450px;
     height: 90vh;
+    max-height: 700px;
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
@@ -25,37 +33,23 @@ body {
     overflow: hidden;
 }
 
-/* Header */
 .chat-header {
     background: #1e293b;
     color: #ffffff;
     padding: 16px 20px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-}
-
-.header-info {
-    display: flex;
     align-items: center;
-    gap: 12px;
 }
 
 .chat-header h1 {
-    font-size: 1.05rem;
-    font-weight: 600;
+    font-size: 1.1rem;
+    font-weight: 700;
 }
 
-.chat-header .subtitle {
-    font-size: 0.78rem;
+.chat-header p {
+    font-size: 0.75rem;
     color: #94a3b8;
-}
-
-.status-dot {
-    width: 10px;
-    height: 10px;
-    background-color: #22c55e;
-    border-radius: 50%;
 }
 
 .reset-btn {
@@ -65,118 +59,298 @@ body {
     padding: 8px;
     border-radius: 8px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: background 0.2s;
 }
 
 .reset-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.2);
 }
 
-/* Área de Mensajes */
 .chat-messages {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+    background: #f8fafc;
 }
 
 .message {
-    display: flex;
     max-width: 85%;
-}
-
-.message-content {
     padding: 12px 16px;
     border-radius: 12px;
-    font-size: 0.93rem;
-    line-height: 1.45;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    word-break: break-word;
 }
 
-.message-content a {
-    color: #2563eb;
-    text-decoration: underline;
-    word-break: break-all;
-}
-
-.user-message .message-content a {
-    color: #ffffff;
-}
-
-.message-content strong {
-    font-weight: 600;
-}
-
-/* Bot Message */
-.bot-message {
-    align-self: flex-start;
-}
-
-.bot-message .message-content {
-    background-color: #f1f5f9;
-    color: #1e293b;
-    border-bottom-left-radius: 2px;
-}
-
-/* User Message */
 .user-message {
     align-self: flex-end;
-}
-
-.user-message .message-content {
-    background-color: #2563eb;
+    background: #2563eb;
     color: #ffffff;
     border-bottom-right-radius: 2px;
 }
 
-/* Formulario */
-.chat-input-area {
-    padding: 15px;
+.bot-message {
+    align-self: flex-start;
+    background: #ffffff;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+    border-bottom-left-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.chat-input-container {
+    padding: 16px;
+    background: #ffffff;
     border-top: 1px solid #e2e8f0;
     display: flex;
     gap: 10px;
-    background: #ffffff;
 }
 
-.chat-input-area input {
+.chat-input-container input {
     flex: 1;
     padding: 12px 16px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     outline: none;
-    font-size: 0.95rem;
-    transition: border-color 0.2s;
+    font-size: 0.9rem;
 }
 
-.chat-input-area input:focus {
+.chat-input-container input:focus {
     border-color: #2563eb;
 }
 
-.chat-input-area button {
+.send-btn {
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.send-btn:hover {
+    background: #1d4ed8;
+}
+
+/* ==========================================
+   3. ESTILOS DEL PANEL DE ADMINISTRACIÓN
+   ========================================== */
+.admin-page {
+    background-color: #f1f5f9;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.admin-wrapper {
+    width: 100%;
+    max-width: 950px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.admin-header {
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 15px;
+}
+
+.admin-header h2 {
+    color: #0f172a;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.admin-header p {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 25px;
+}
+
+@media (max-width: 768px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.admin-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-card h3 {
+    font-size: 1.05rem;
+    color: #1e293b;
+}
+
+.file-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 20px;
+    background: #ffffff;
+    gap: 8px;
+}
+
+.file-dropzone input[type="file"] {
+    display: none;
+}
+
+.file-label {
+    cursor: pointer;
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.file-name {
+    color: #64748b;
+    font-size: 0.8rem;
+    word-break: break-all;
+}
+
+.btn-primary {
+    width: 100%;
     background: #2563eb;
     color: white;
     border: none;
+    padding: 12px;
     border-radius: 8px;
-    padding: 0 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.doc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.doc-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+}
+
+.doc-name {
+    word-break: break-all;
+    padding-right: 10px;
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.status-box {
+    font-size: 0.85rem;
+}
+
+.admin-footer {
+    text-align: center;
+}
+
+.btn-back {
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.btn-back:hover {
+    color: #0f172a;
+}
+
+.chat-input-container {
+    padding: 12px 16px;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.chat-input-container input {
+    flex: 1;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    color: #1e293b;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.chat-input-container input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.send-btn {
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
+    transition: background 0.2s ease;
 }
 
-.chat-input-area button:hover {
+.send-btn:hover {
     background: #1d4ed8;
-}
-
-.typing {
-    font-style: italic;
-    color: #64748b;
-    font-size: 0.85rem;
 }

@@ -26,15 +26,19 @@ class RagService:
         if not historial:
             return pregunta
         
-        # Para respuestas muy cortas ("sí", "no", "listo"), se combina con la pregunta previa
-        # para evitar que el vector pierda el contexto del tema
+        # Para respuestas muy cortas ("sí", "no", "listo"), combinamos la respuesta
+        # con el último mensaje del ASISTENTE. Así Qdrant sabe exactamente en qué paso vamos.
         palabras = pregunta.strip().split()
         if len(palabras) <= 4:
             for mensaje in reversed(historial):
                 role = mensaje.role if hasattr(mensaje, 'role') else mensaje.get('role', '')
                 content = mensaje.content if hasattr(mensaje, 'content') else mensaje.get('content', '')
-                if role == 'user' and len(content.strip().split()) > 3:
-                    return f"{content} {pregunta}"
+                
+                # CAMBIO CLAVE: Cambiamos 'user' por 'assistant'
+                if role == 'assistant':
+                    consulta_enriquecida = f"Paso actual documentado: {content} --- Respuesta del usuario: {pregunta}"
+                    print(f"Consulta RAG enriquecida: {consulta_enriquecida}")
+                    return consulta_enriquecida
         
         return pregunta
 
