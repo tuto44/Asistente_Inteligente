@@ -1,5 +1,5 @@
 /* ==========================================
-   1. ESTILOS GLOBALES Y TIPOGRAFÍA
+   1. ESTILOS GLOBALES
    ========================================== */
 * {
     box-sizing: border-box;
@@ -18,21 +18,8 @@ body {
 }
 
 /* ==========================================
-   2. ESTILOS DE LA PANTALLA DE CHAT
+   2. ENCABEZADO Y BRANDING (CHAT)
    ========================================== */
-.chat-container {
-    width: 100%;
-    max-width: 450px;
-    height: 90vh;
-    max-height: 700px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
 .chat-header {
     background: #1e293b;
     color: #ffffff;
@@ -42,14 +29,104 @@ body {
     align-items: center;
 }
 
-.chat-header h1 {
-    font-size: 1.1rem;
-    font-weight: 700;
+.chat-header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.chat-header p {
-    font-size: 0.75rem;
-    color: #94a3b8;
+.brand-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+/* SVG - Elementos del logo de lavadora */
+.logo-bg {
+    fill: #1d4f91;
+    stroke: #60a5fa;
+    stroke-width: 2;
+}
+
+.logo-divider {
+    stroke: #3b82f6;
+    stroke-width: 1.5;
+    opacity: 0.4;
+}
+
+.logo-panel {
+    fill: #dbeafe;
+}
+
+.logo-tech {
+    fill: #38bdf8;
+}
+
+.logo-button {
+    fill: #60a5fa;
+}
+
+.logo-knob-mark {
+    stroke: #102a4c;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+}
+
+.logo-drum-border {
+    fill: #dbeafe;
+    stroke: #93c5fd;
+    stroke-width: 2;
+}
+
+.logo-drum {
+    fill: #102a4c;
+    stroke: #3b82f6;
+    stroke-width: 1.5;
+}
+
+.logo-handle {
+    stroke: #60a5fa;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.logo-shine {
+    stroke: #38bdf8;
+    stroke-width: 2;
+    stroke-linecap: round;
+    fill: none;
+}
+
+/* Textos de la marca */
+.brand-text h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.brand-text h2 span {
+    color: #3b82f6;
+}
+
+.brand-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 4px;
+}
+
+.subtitle-line {
+    width: 18px;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 4px;
+}
+
+.brand-subtitle small {
+    color: #aab7c9;
+    font-size: 13px;
 }
 
 .reset-btn {
@@ -64,6 +141,22 @@ body {
 
 .reset-btn:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================
+   3. PANTALLA DE CHAT
+   ========================================== */
+.chat-container {
+    width: 100%;
+    max-width: 450px;
+    height: 90vh;
+    max-height: 700px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .chat-messages {
@@ -102,35 +195,45 @@ body {
 }
 
 .chat-input-container {
-    padding: 16px;
+    padding: 12px 16px;
     background: #ffffff;
     border-top: 1px solid #e2e8f0;
     display: flex;
+    align-items: center;
     gap: 10px;
+    width: 100%;
 }
 
 .chat-input-container input {
     flex: 1;
-    padding: 12px 16px;
+    width: 100%;
+    padding: 10px 14px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     outline: none;
     font-size: 0.9rem;
+    color: #1e293b;
+    background: #f8fafc;
+    transition: all 0.2s ease;
 }
 
 .chat-input-container input:focus {
     border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .send-btn {
     background: #2563eb;
     color: #ffffff;
     border: none;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
 }
 
 .send-btn:hover {
@@ -138,7 +241,7 @@ body {
 }
 
 /* ==========================================
-   3. ESTILOS DEL PANEL DE ADMINISTRACIÓN
+   4. PANEL DE ADMINISTRACIÓN
    ========================================== */
 .admin-page {
     background-color: #f1f5f9;
@@ -172,11 +275,6 @@ body {
     color: #0f172a;
     font-size: 1.5rem;
     margin-bottom: 5px;
-}
-
-.admin-header p {
-    color: #64748b;
-    font-size: 0.9rem;
 }
 
 .admin-grid {
@@ -309,6 +407,41 @@ body {
     color: #0f172a;
 }
 
+/* ==========================================
+   ESTILOS DE LA PANTALLA DE CHAT (CORREGIDOS)
+   ========================================== */
+.chat-container {
+    width: 100%;
+    max-width: 450px;
+    height: 90vh;
+    max-height: 700px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Regla indispensable para expandir el área del chat */
+.chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #f8fafc;
+}
+
 .chat-input-container {
     padding: 12px 16px;
     background: #ffffff;
@@ -317,40 +450,4 @@ body {
     align-items: center;
     gap: 10px;
     width: 100%;
-}
-
-.chat-input-container input {
-    flex: 1;
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    outline: none;
-    font-size: 0.9rem;
-    color: #1e293b;
-    background: #f8fafc;
-    transition: all 0.2s ease;
-}
-
-.chat-input-container input:focus {
-    border-color: #2563eb;
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.send-btn {
-    background: #2563eb;
-    color: #ffffff;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
-}
-
-.send-btn:hover {
-    background: #1d4ed8;
 }

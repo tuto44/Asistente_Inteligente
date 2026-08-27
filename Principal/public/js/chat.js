@@ -49,8 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const res = await fetch('/reset', { method: 'POST' });
                 if (res.ok) {
+                // 1. Limpiar el contenedor de mensajes y botones flotantes
                     chatMessages.innerHTML = '';
-                    appendMessage('bot', '¡Hola! 👋 Soy tu asistente de Soporte TI. ¿En qué te puedo ayudar hoy? (Citrix, VPN, Contraseñas, etc.)');
+                    document.querySelectorAll('.quick-replies-container').forEach(el => el.remove());
+
+                // 2. Renderizar el saludo enviando isTyping=false y showQuickReplies=false
+                    appendMessage(
+                        'bot', 
+                        '¡Hola! 👋 Soy tu asistente de Soporte TI. ¿En qué te puedo ayudar hoy? (Citrix, VPN, Contraseñas, etc.)', 
+                        false, 
+                        false
+                    );
                 }
             } catch (error) {
                 console.error('Error al reiniciar sesión:', error);
@@ -87,7 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return safeText;
     }
 
-    function appendMessage(sender, text, isTyping = false) {
+    function appendMessage(sender, text, isTyping = false, showQuickReplies = true) {
+    // 1. Limpiar botones flotantes anteriores
+        document.querySelectorAll('.quick-replies-container').forEach(el => el.remove());
+
         const messageDiv = document.createElement('div');
         messageCounter++;
         const messageId = `msg-${Date.now()}-${messageCounter}`;
@@ -106,6 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         messageDiv.appendChild(contentDiv);
+
+    // 2. Insertar botones SOLO si sender es 'bot', no está escribiendo Y showQuickReplies es true
+        if (sender === 'bot' && !isTyping && showQuickReplies) {
+            const quickRepliesDiv = document.createElement('div');
+            quickRepliesDiv.className = 'quick-replies-container';
+            quickRepliesDiv.innerHTML = `
+                <button type="button" class="btn-quick-reply" onclick="sendQuickReply('Sí')">👍 Sí</button>
+                <button type="button" class="btn-quick-reply" onclick="sendQuickReply('No')">👎 No</button>
+            `;
+            messageDiv.appendChild(quickRepliesDiv);
+        }
+
         chatMessages.appendChild(messageDiv);
 
         chatMessages.scrollTo({
@@ -114,12 +138,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         return messageId;
-    }
-
+}
     function removeMessage(id) {
         const element = document.getElementById(id);
         if (element) {
             element.remove();
         }
     }
+
+    window.sendQuickReply = function(text) {
+    // 1. Ocultar todos los botones de respuesta rápida en la pantalla para evitar dobles clics
+    document.querySelectorAll('.quick-replies-container').forEach(el => el.remove());
+
+    // 2. Colocar el texto en el input del chat
+    const inputField = document.getElementById('user-input'); // Ajusta con el ID de tu input
+    if (inputField) {
+        inputField.value = text;
+    }
+
+    // 3. Disparar el evento de envío del formulario/chat existente
+    const sendButton = document.getElementById('send-btn'); // Ajusta con el ID de tu botón enviar
+    if (sendButton) {
+        sendButton.click();
+    }
+};
 });
