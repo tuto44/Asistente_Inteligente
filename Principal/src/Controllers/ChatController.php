@@ -24,8 +24,9 @@ class ChatController {
             $input = json_decode(file_get_contents('php://input'), true);
             $question = $input['pregunta'] ?? '';
             $userName = $input['usuario'] ?? 'Usuario';
+            $imageBase64 = $input['image_base64'] ?? null;
 
-            if (empty($question)) {
+            if (empty($question) && empty($imageBase64)) {
                 echo json_encode(['status' => 'error', 'answer' => 'La pregunta está vacía.']);
                 return;
             }
@@ -34,7 +35,8 @@ class ChatController {
             $payload = [
                 'question' => $question,
                 'historial' => $historial,
-                'user_name' => $userName
+                'user_name' => $userName,
+                'image_base64' => $imageBase64
             ];
 
             $client = new Client();
@@ -53,6 +55,7 @@ class ChatController {
             $result = json_decode($response->getBody(), true);
             $botAnswer = $result['answer'] ?? 'Respuesta vacía del asistente.';
 
+            $textoGuardar = !empty($question) ? $question : '[Imagen Adjunta]';
             $this->chatHistoryModel->saveMessage($this->sessionId, $userName, 'user', $question);
             $this->chatHistoryModel->saveMessage($this->sessionId, $userName, 'assistant', $botAnswer);
 

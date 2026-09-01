@@ -9,6 +9,7 @@ class ChatRequest(BaseModel):
     question: str
     historial: List[MensajeHistorial] = []  # PHP nos envía los últimos mensajes
     user_name: Optional[str] = "Usuario"
+    image_base64: Optional[str] = None
 
 class ChatResponse(BaseModel):
     status: str

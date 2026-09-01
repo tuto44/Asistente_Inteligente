@@ -13,6 +13,7 @@
         <header class="chat-header">
             <div class="header-info">
                 <div class="chat-header-title">
+                    <div class="brand-logo-container">
             <svg
                 class="brand-icon" viewBox="0 0 64 64"fill="none" xmlns="http://www.w3.org/2000/svg" >
                 <rect x="8" y="4" width="48" height="56" rx="9" class="logo-bg"/>
@@ -26,6 +27,9 @@
                 <path d="M 24 35 A 9 9 0 0 1 38 34" class="logo-shine"/>
                 <path d="M 43 37 C 44.5 39 44.5 41 43 43" class="logo-handle"/>
             </svg>
+                        <span class="logo-subtext">HWI</span>
+            </div>
+
                     <div class="brand-text">
                         <h2>SmartSupport <span>IA</span></h2>
                         <div class="brand-subtitle">
@@ -55,15 +59,33 @@
             </div>
 
             <!-- Formulario de Envío -->
-            <form id="chat-form" class="chat-input-container">
-                <input type="text" id="user-input" placeholder="Escribe tu consulta aquí..." autocomplete="off" aria-label="Escribe tu consulta" required>
-                <button type="submit" class="send-btn" id="send-btn" aria-label="Enviar mensaje">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
-            </form>
+<form id="chat-form" class="chat-input-container">
+    <!-- Botón Adjuntar Imagen -->
+    <label for="image-input" class="attach-btn" title="Adjuntar captura de pantalla">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
+            <line x1="16" y1="5" x2="22" y2="5"></line>
+            <line x1="19" y1="2" x2="19" y2="8"></line>
+            <circle cx="9" cy="9" r="2"></circle>
+            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+        </svg>
+    </label>
+    <input type="file" id="image-input" accept="image/png, image/jpeg, image/webp" style="display: none;">
+
+    <input type="text" id="user-input" placeholder="Escribe tu consulta aquí..." autocomplete="off" aria-label="Escribe tu consulta">
+    
+    <button type="submit" class="send-btn" id="send-btn" aria-label="Enviar mensaje">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+    </button>
+</form>
+<!-- Vista Previa de Imagen -->
+<div id="image-preview-container" class="image-preview-container" style="display: none;">
+    <span id="image-preview-name"></span>
+    <button type="button" id="remove-image-btn">&times;</button>
+</div>
         </main>
     </div>
 

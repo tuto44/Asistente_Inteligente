@@ -17,7 +17,8 @@ def chat(request: ChatRequest):
     respuesta_texto = rag_service.responder(
         usuario=request.user_name,
         pregunta=request.question,
-        historial=request.historial
+        historial=request.historial,
+        image_base64=request.image_base64
     )
     
     return ChatResponse(
